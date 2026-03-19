@@ -10,6 +10,18 @@ PLUGIN_NAME="uwu-regression-testing-plugin"
 PLUGIN_SOURCE_DIR="$(pwd)"
 PLUGIN_REMOTE_DIR="$REMOTE_DIR/plugins/$PLUGIN_NAME"
 
+# Check for required tools
+if ! command -v sshpass &> /dev/null; then
+    echo "❌ sshpass is required but not installed."
+    echo "   Install it with: brew install sshpass (macOS) or apt-get install sshpass (Linux)"
+    exit 1
+fi
+
+if ! command -v tar &> /dev/null; then
+    echo "❌ tar is required but not installed."
+    exit 1
+fi
+
 # Get password from environment variable or prompt
 if [ -z "$UWU_SERVER_PASSWORD" ]; then
     echo "🔐 Enter server password for $USER@$SERVER:"
@@ -31,12 +43,17 @@ run_remote "mkdir -p $PLUGIN_REMOTE_DIR"
 
 # Step 2: Copy plugin files to server
 echo "📦 Step 2: Copying plugin files to server..."
-# Create tar archive of plugin
+# Create tar archive of plugin (only essential files)
 tar -czf /tmp/$PLUGIN_NAME.tar.gz \
   --exclude='node_modules' \
   --exclude='dist' \
   --exclude='.git' \
   --exclude='.github' \
+  --exclude='test-deploy.sh' \
+  --exclude='verify-deployment.sh' \
+  --exclude='continue-development.sh' \
+  --exclude='*.tmp' \
+  --exclude='*.log' \
   .
 
 # Upload to server
@@ -50,6 +67,14 @@ run_remote "rm /tmp/$PLUGIN_NAME.tar.gz"
 
 # Step 3: Install dependencies and build plugin
 echo "📦 Step 3: Installing dependencies and building plugin..."
+echo "   Checking if bun is installed on server..."
+if ! run_remote "command -v bun" &> /dev/null; then
+    echo "   ❌ bun is not installed on server. Installing bun..."
+    run_remote "curl -fsSL https://bun.sh/install | bash"
+    run_remote "export BUN_INSTALL=\"\$HOME/.bun\" && export PATH=\"\$BUN_INSTALL/bin:\$PATH\""
+fi
+
+echo "   Installing dependencies and building plugin..."
 run_remote "cd $PLUGIN_REMOTE_DIR && bun install && bun run build"
 
 # Step 4: Create plugin-injection directory and update .opencode configuration
@@ -94,12 +119,16 @@ EOF"
 
 # Step 5: Update existing workspaces
 echo "📦 Step 5: Updating existing workspaces..."
-run_remote "for workspace in $REMOTE_DIR/workspaces/*/; do
-  if [ -d \"\$workspace\" ]; then
-    cp $REMOTE_DIR/plugin-injection/opencode-with-regression-testing.json \"\$workspace/.opencode\"
-    echo \"Updated: \$workspace\"
-  fi
-done"
+run_remote "if [ -d \"$REMOTE_DIR/workspaces\" ]; then
+  for workspace in \"$REMOTE_DIR/workspaces\"/*/; do
+    if [ -d \"\$workspace\" ]; then
+      cp \"$REMOTE_DIR/plugin-injection/opencode-with-regression-testing.json\" \"\$workspace/.opencode\"
+      echo \"Updated: \$workspace\"
+    fi
+  done
+else
+  echo \"No existing workspaces found, skipping workspace updates.\"
+fi"
 
 # Step 6: Create test workspace
 echo "📦 Step 6: Creating test workspace..."
