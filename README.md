@@ -87,6 +87,53 @@ export default defineConfig({
 });
 ```
 
+## Testing
+
+### After Deployment
+
+1. **Verify deployment**:
+   ```bash
+   chmod +x verify-deployment.sh
+   ./verify-deployment.sh
+   ```
+
+2. **Run test script on server**:
+   ```bash
+   ssh root@149.28.143.214
+   /root/uwu-my-opencode/test-regression-plugin.sh
+   ```
+
+3. **Test Playwright execution**:
+   - Access workspace: https://code.vidwadeseram.com/
+   - Navigate to the "regression-testing" workspace
+   - Click "Run Tests" button in toolbar
+   - Check sidebar for test results
+
+4. **Verify test artifacts**:
+   - Check `.uwu/test-reports/` directory in workspace
+   - Verify screenshots, traces, and videos are captured
+   - Confirm test reports are displayed in UI
+
+### Manual Testing
+
+Create a test file in your workspace:
+
+```typescript
+// tests/example.spec.ts
+import { test, expect } from '@playwright/test';
+
+test('basic test', async ({ page }) => {
+  await page.goto('https://example.com');
+  await expect(page).toHaveTitle('Example Domain');
+});
+
+test('click test', async ({ page }) => {
+  await page.goto('https://example.com');
+  await page.click('a');
+  await expect(page).toHaveURL(/iana/);
+});
+```
+
 ## Development
 
 ```bash
