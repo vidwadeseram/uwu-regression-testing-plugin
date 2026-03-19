@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+.bun-install/
+.pnpm-store/
+
+# Build outputs
+dist/
+*.tsbuildinfo
+
+# Runtime data
+.playwright/
+test-results/
+playwright-report/
+*.trace.zip
+*.webm
+*.png
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+
+# uwu-my-opencode specific
+.uwu/
+workspaces/
+
+# Plugin development
+plugin-local-test/
+
+# Bun
+.bun.lockb
+
+# TypeScript
+*.js.map
+*.d.ts.map
+
+# Test artifacts
+artifacts/
+screenshots/
+videos/
+traces/
+
+# Playwright
+playwright/.cache/
+playwright/downloads/

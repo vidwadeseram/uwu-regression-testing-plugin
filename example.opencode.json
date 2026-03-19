@@ -1,0 +1,22 @@
+{
+  "plugin": [
+    "oh-my-opencode",
+    {
+      "name": "external-plugin-loader",
+      "config": {
+        "enabled": true,
+        "autoInstall": true,
+        "autoUpdate": false,
+        "pluginDir": "plugins",
+        "plugins": [
+          {
+            "type": "local",
+            "source": "/path/to/uwu-regression-testing-plugin",
+            "enabled": true,
+            "name": "uwu-regression-testing-plugin"
+          }
+        ]
+      }
+    }
+  ]
+}

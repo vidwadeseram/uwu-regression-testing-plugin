@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import type { PluginAPI } from '@opencode-ai/sdk';
+import type { PluginAPI } from '../types/opencode';
 
 interface TestButtonProps {
   api: PluginAPI;

@@ -1,5 +1,5 @@
 import { createSignal, createEffect } from 'solid-js';
-import type { PluginAPI } from '@opencode-ai/sdk';
+import type { PluginAPI } from '../types/opencode';
 
 interface TestReport {
   passed: number;

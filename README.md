@@ -12,6 +12,45 @@ Automated Playwright regression testing plugin for OpenCode workspaces.
 
 ## Installation
 
+### For uwu-my-opencode (Injection Method)
+
+The plugin uses uwu-daemon's injection system via workspace `.opencode` files:
+
+1. **Deploy to server**:
+   ```bash
+   chmod +x deploy-to-server.sh
+   ./deploy-to-server.sh
+   ```
+
+2. **Manual installation**:
+   - Copy the plugin to your server: `/root/uwu-my-opencode/plugins/uwu-regression-testing-plugin/`
+   - Update workspace `.opencode` files to include the plugin:
+
+```json
+{
+  "plugin": [
+    "oh-my-opencode",
+    {
+      "name": "external-plugin-loader",
+      "config": {
+        "enabled": true,
+        "autoInstall": true,
+        "plugins": [
+          {
+            "type": "local",
+            "source": "/root/uwu-my-opencode/plugins/uwu-regression-testing-plugin",
+            "enabled": true,
+            "name": "uwu-regression-testing-plugin"
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+### For Standalone OpenCode
+
 Add to your workspace `.opencode` file:
 
 ```json
