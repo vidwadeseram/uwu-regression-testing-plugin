@@ -1,0 +1,34 @@
+{
+  "name": "uwu-regression-testing-plugin",
+  "version": "0.1.0",
+  "description": "Automated Playwright regression testing plugin for OpenCode",
+  "author": "vidwadeseram",
+  "license": "MIT",
+  "homepage": "https://github.com/vidwadeseram/uwu-regression-testing-plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vidwadeseram/uwu-regression-testing-plugin.git"
+  },
+  "keywords": ["opencode", "plugin", "testing", "playwright", "regression"],
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target node --format esm",
+    "dev": "bun build ./src/index.ts --outdir ./dist --target node --format esm --watch",
+    "test": "bun test",
+    "lint": "bunx biome check --apply .",
+    "format": "bunx biome format --write ."
+  },
+  "dependencies": {
+    "@opencode-ai/sdk": "^0.1.0",
+    "@playwright/test": "^1.58.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "^1.1.14",
+    "@types/node": "^22.10.6",
+    "typescript": "^5.7.3"
+  }
+}

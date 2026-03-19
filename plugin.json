@@ -1,0 +1,83 @@
+{
+  "name": "uwu-regression-testing",
+  "version": "0.1.0",
+  "description": "Automated Playwright regression testing for OpenCode workspaces",
+  "author": "vidwadeseram",
+  "license": "MIT",
+  "homepage": "https://github.com/vidwadeseram/uwu-regression-testing-plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vidwadeseram/uwu-regression-testing-plugin.git"
+  },
+  "keywords": ["opencode", "plugin", "testing", "playwright", "regression"],
+  "engines": {
+    "opencode": ">=0.1.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target node --format esm",
+    "dev": "bun build ./src/index.ts --outdir ./dist --target node --format esm --watch",
+    "test": "bun test",
+    "lint": "bunx biome check --apply .",
+    "format": "bunx biome format --write ."
+  },
+  "dependencies": {
+    "@opencode-ai/sdk": "^0.1.0",
+    "@playwright/test": "^1.58.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "^1.1.14",
+    "@types/node": "^22.10.6",
+    "typescript": "^5.7.3"
+  },
+  "opencode": {
+    "plugin": true,
+    "uiSlots": [
+      {
+        "slot": "workspace-toolbar",
+        "component": "TestButton",
+        "priority": 50
+      },
+      {
+        "slot": "workspace-sidebar",
+        "component": "TestReportPanel",
+        "priority": 30
+      }
+    ],
+    "tools": [
+      {
+        "name": "run_regression_tests",
+        "description": "Run Playwright regression tests for the current workspace",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "workspace": {
+              "type": "string",
+              "description": "Workspace name to run tests for"
+            },
+            "testPath": {
+              "type": "string",
+              "description": "Optional specific test file or directory to run"
+            },
+            "browser": {
+              "type": "string",
+              "enum": ["chromium", "firefox", "webkit"],
+              "default": "chromium",
+              "description": "Browser to run tests in"
+            }
+          },
+          "required": ["workspace"]
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "name": "onWorkspaceOpen",
+        "description": "Initialize test environment when workspace opens"
+      }
+    ]
+  }
+}
