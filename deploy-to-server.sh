@@ -5,11 +5,19 @@ set -e
 
 SERVER="149.28.143.214"
 USER="root"
-PASSWORD="9_xEC279?85n}R{M"
 REMOTE_DIR="/root/uwu-my-opencode"
 PLUGIN_NAME="uwu-regression-testing-plugin"
 PLUGIN_SOURCE_DIR="$(pwd)"
 PLUGIN_REMOTE_DIR="$REMOTE_DIR/plugins/$PLUGIN_NAME"
+
+# Get password from environment variable or prompt
+if [ -z "$UWU_SERVER_PASSWORD" ]; then
+    echo "🔐 Enter server password for $USER@$SERVER:"
+    read -s PASSWORD
+    echo
+else
+    PASSWORD="$UWU_SERVER_PASSWORD"
+fi
 
 echo "🚀 Deploying $PLUGIN_NAME to server..."
 
