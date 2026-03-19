@@ -52,6 +52,7 @@ tar -czf /tmp/$PLUGIN_NAME.tar.gz \
   --exclude='test-deploy.sh' \
   --exclude='verify-deployment.sh' \
   --exclude='continue-development.sh' \
+  --exclude='simulate-deployment.sh' \
   --exclude='*.tmp' \
   --exclude='*.log' \
   .
