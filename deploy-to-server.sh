@@ -52,8 +52,9 @@ run_remote "rm /tmp/$PLUGIN_NAME.tar.gz"
 echo "📦 Step 3: Installing dependencies and building plugin..."
 run_remote "cd $PLUGIN_REMOTE_DIR && bun install && bun run build"
 
-# Step 4: Update .opencode configuration in workspaces
-echo "📦 Step 4: Updating .opencode configuration in workspaces..."
+# Step 4: Create plugin-injection directory and update .opencode configuration
+echo "📦 Step 4: Creating plugin injection configuration..."
+run_remote "mkdir -p $REMOTE_DIR/plugin-injection"
 run_remote "cat > $REMOTE_DIR/plugin-injection/opencode-with-regression-testing.json << 'EOF'
 {
   \"plugin\": [
@@ -66,11 +67,6 @@ run_remote "cat > $REMOTE_DIR/plugin-injection/opencode-with-regression-testing.
         \"autoUpdate\": false,
         \"pluginDir\": \"plugins\",
         \"plugins\": [
-          {
-            \"type\": \"local\",
-            \"source\": \"$REMOTE_DIR/plugin-injection/full-plugin\",
-            \"enabled\": true
-          },
           {
             \"type\": \"local\",
             \"source\": \"$PLUGIN_REMOTE_DIR\",
